@@ -18,3 +18,36 @@ pipeline/
 ├── src/                # Scripts modulares (Extract, Transform, Load)
 ├── main.py             # Executável principal da Pipeline
 └── app.py              # Dashboard interativo do Streamlit
+
+## Funcionalidades
+
+### Multi-Moedas: Monitoramento simultâneo de USD, EUR e BTC.
+
+### Data Lake Resiliente: Acúmulo de dados históricos sem duplicidade.
+
+### Análise de Tendência: Dashboard com Média Móvel configurável para suavizar ruídos de mercado (especialmente útil para criptomoedas).
+
+### Segurança: Uso de variáveis de ambiente e caminhos relativos para portabilidade total.
+
+## Como Executar
+
+### Clone o repositório:
+
+git clone [https://github.com/JoaoVSantos15/pipeline-cotacao.git](https://github.com/JoaoVSantos15/pipeline-cotacao.git)
+cd pipeline-cotacao
+
+## Instale as dependências:
+
+pip install -r requirements.txt
+
+## Execute a Pipeline (Extração):
+
+python pipeline/main.py
+
+## Inicie o Dashboard:
+
+python -m streamlit run pipeline/app.py
+
+## Automação (GitHub Actions)
+
+O projeto está configurado para rodar automaticamente em intervalos programados, garantindo que o dashboard esteja sempre atualizado com os dados mais recentes do mercado sem intervenção humana.

@@ -1,30 +1,45 @@
+import os
+import logging
 from src.extract import fetch_currency_data
 from src.transform import transform_currency_data
 from src.load import save_to_parquet
-import logging
-import os
 
-# O código tenta pegar do cofre, se não achar, usa um padrão local
-FILENAME = os.getenv("NOME_ARQUIVO_PARQUET", "data/cotacao_dolar.parquet")
-
-# Configuração de Log Centralizada
+# Configuração de Logs
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def run_pipeline():
+    # Ponto de Segurança: Busca o caminho do cofre ou usa o padrão
+    target_file = os.getenv("NOME_ARQUIVO_PARQUET", "data/cotacao_dolar.parquet")
+    
+    # Configuração de Expansão: Lista de moedas que queremos monitorar
+    # O formato da AwesomeAPI é 'MoedaOrigem-MoedaDestino'
+    currencies = ["USD-BRL", "EUR-BRL", "BTC-BRL"]
+    
     try:
-        # 1. EXTRAÇÃO (Bronze)
-        raw_data = fetch_currency_data()
+        logging.info(f"Iniciando pipeline para as moedas: {currencies}")
         
-        # 2. TRANSFORMAÇÃO (Silver)
-        df = transform_currency_data(raw_data)
+        # 1. Extração (Agora enviando a lista completa)
+        raw_data = fetch_currency_data(currencies)
         
-        # 3. CARGA (Gold/Refined)
-        save_to_parquet(df)
-        
-        logging.info("Pipeline executada com sucesso!")
+        if raw_data:
+            all_processed_data = []
+            
+            # 2. Transformação (Iteramos sobre cada moeda retornada pela API)
+            for key in raw_data:
+                logging.info(f"Processando dados para: {key}")
+                df_item = transform_currency_data(raw_data[key])
+                all_processed_data.append(df_item)
+            
+            # Unificamos todas as moedas em um único DataFrame
+            import pandas as pd
+            final_df = pd.concat(all_processed_data, ignore_index=True)
+            
+            # 3. Carga (Salvando o novo "Data Lake" unificado)
+            save_to_parquet(final_df, target_file)
+            logging.info("Pipeline multimoedas executada com sucesso!")
         
     except Exception as e:
-        logging.error(f"A pipeline falhou durante a execução: {e}")
+        logging.error(f"Erro crítico na pipeline: {e}")
 
 if __name__ == "__main__":
     run_pipeline()

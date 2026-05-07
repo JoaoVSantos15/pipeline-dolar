@@ -29,8 +29,8 @@ jobs:
 
     - name: Salvar alterações no repositório
       run: |
-        git config --global user.name 'Github Action'
-        git config --global user.email 'action@github.com'
+        git config --global user.name 'JoaoVSantos15'
+        git config --global user.email '[EMAIL_ADDRESS]'
         git add data/cotacao_dolar.parquet
         git commit -m "Automated update: $(date)" || echo "Sem mudanças para commitar"
         git push

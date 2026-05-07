@@ -2,6 +2,10 @@ from src.extract import fetch_currency_data
 from src.transform import transform_currency_data
 from src.load import save_to_parquet
 import logging
+import os
+
+# O código tenta pegar do cofre, se não achar, usa um padrão local
+FILENAME = os.getenv("NOME_ARQUIVO_PARQUET", "data/cotacao_dolar.parquet")
 
 # Configuração de Log Centralizada
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')

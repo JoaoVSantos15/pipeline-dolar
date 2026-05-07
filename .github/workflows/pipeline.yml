@@ -25,6 +25,9 @@ jobs:
         pip install -r requirements.txt
 
     - name: Executar ETL
+      env:
+        # Aqui fazemos a ponte: a variável do Python recebe o valor do Secret
+        NOME_ARQUIVO_PARQUET: ${{ secrets.NOME_ARQUIVO_PARQUET }}
       run: python main.py
 
     - name: Salvar alterações no repositório

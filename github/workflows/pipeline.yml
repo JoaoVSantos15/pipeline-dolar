@@ -1,0 +1,36 @@
+name: Dolar Pipeline ETL
+
+on:
+  push:
+    branches: [ main ]
+  schedule:
+    - cron: '0 12 * * *' # Roda todo dia ao meio-dia (UTC)
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout do código
+      uses: actions/checkout@v3
+
+    - name: Configurar Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Instalar dependências
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Executar ETL
+      run: python main.py
+
+    - name: Salvar alterações no repositório
+      run: |
+        git config --global user.name 'Github Action'
+        git config --global user.email 'action@github.com'
+        git add data/cotacao_dolar.parquet
+        git commit -m "Automated update: $(date)" || echo "Sem mudanças para commitar"
+        git push

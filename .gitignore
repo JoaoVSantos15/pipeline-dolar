@@ -1,0 +1,16 @@
+# Ambientes Virtuais
+venv/
+.venv/
+env/
+
+# Python Cache
+__pycache__/
+*.pyc
+
+# Dados (Opcional)
+# Se você quiser que o GitHub comece com um histórico vazio, 
+# ignore a pasta data. Mas como vamos usar o Actions para 
+# atualizar, NÃO vamos ignorar a pasta data neste projeto.
+
+# Logs
+logs/*.log

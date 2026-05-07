@@ -1,19 +1,20 @@
-# Pipeline de Cotação de Dólar (ETL)
+# Financial Data Pipeline & BI Dashboard
 
-Pipeline automatizada para extração, transformação e armazenamento de cotações USD-BRL utilizando Python e GitHub Actions.
+Este projeto é uma pipeline de dados (ETL) automatizada que extrai cotações de moedas (Dólar, Euro e Bitcoin), armazena-as em um formato de alta performance (Parquet) e as visualiza em um dashboard interativo para análise de tendências.
 
 ## Tecnologias Utilizadas
-- **Python 3.11**
-- **Pandas**: Manipulação e transformação de dados.
-- **PyArrow**: Engine para suporte ao formato Parquet.
-- **GitHub Actions**: Automação da pipeline (CI/CD).
-- **AwesomeAPI**: Fonte de dados em tempo real.
+- **Linguagem:** Python 3.x
+- **Extração:** API AwesomeAPI (JSON)
+- **Processamento/Análise:** Pandas & Numpy
+- **Armazenamento:** Apache Parquet (Storage colunar para BI)
+- **Visualização:** Streamlit & Plotly
+- **Automação:** GitHub Actions (CI/CD)
 
-## Arquitetura
-O projeto segue o modelo de responsabilidade única:
-1. **Extract**: Captura dados brutos da API com tratamento de erros e timeouts.
-2. **Transform**: Limpeza, renomeação de colunas e tipagem correta (float/datetime).
-3. **Load**: Armazenamento incremental em formato **Parquet** (colunar), garantindo performance e histórico sem duplicatas.
-
-## Automação
-A pipeline está configurada para rodar automaticamente todos os dias através do GitHub Actions, mantendo o arquivo de dados sempre atualizado no repositório.
+## Estrutura do Projeto
+```text
+pipeline/
+├── .github/workflows/  # Automação de execução programada
+├── data/               # Local de armazenamento do Data Lake (Parquet)
+├── src/                # Scripts modulares (Extract, Transform, Load)
+├── main.py             # Executável principal da Pipeline
+└── app.py              # Dashboard interativo do Streamlit

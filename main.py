@@ -9,8 +9,16 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 
 def run_pipeline():
     # Ponto de Segurança: Busca o caminho do cofre ou usa o padrão
-    target_file = os.getenv("NOME_ARQUIVO_PARQUET", "data/cotacao_dolar.parquet")
-    
+    # Pega o caminho absoluto de onde o arquivo main.py está
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+    # Define o caminho para a pasta data dentro da pasta do script
+    # Se o seu main.py está em 'pipeline/', o data será criado em 'pipeline/data/'
+    target_file = os.path.join(BASE_DIR, "data", "cotacao_dolar.parquet")
+
+    # Garante que a pasta 'data' existe antes de salvar
+    os.makedirs(os.path.dirname(target_file), exist_ok=True)
+
     # Configuração de Expansão: Lista de moedas que queremos monitorar
     # O formato da AwesomeAPI é 'MoedaOrigem-MoedaDestino'
     currencies = ["USD-BRL", "EUR-BRL", "BTC-BRL"]

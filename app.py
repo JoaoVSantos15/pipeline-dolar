@@ -2,6 +2,14 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
+import os
+
+# 1. Descobrir onde o app.py está localizado
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# 2. Montar o caminho para o arquivo parquet dentro da pasta data
+# Isso garante que ele aponte para pipeline/data/cotacao_dolar.parquet
+PATH_PARQUET = os.path.join(BASE_DIR, "data", "cotacao_dolar.parquet")
 
 st.set_page_config(page_title="Dashboard Intelligence", layout="wide")
 
@@ -33,7 +41,7 @@ try:
         col1, col2, col3 = st.columns(3)
         col1.metric("Preço Atual", f"R$ {float(ultima['compra']):.2f}")
         col2.metric("Média Móvel", f"R$ {float(ultima['media_movel']):.2f}" if not pd.isna(ultima['media_movel']) else "Calculando...")
-        col3.metric("Variação do Dia", f"{ultima['variacao_pct']}%")
+        col3.metric("Variação do Dia", f"{float(ultima['variacao_pct']):.4f}%")
 
         # Gráfico Avançado com Plotly Graph Objects
         st.subheader(f"Análise de Tendência - {moeda_selecionada}")

@@ -25,7 +25,7 @@ jobs:
         pip install -r requirements.txt
 
     - name: Executar ETL
-      run: python main.py
+      run:  python pipeline/main.py
 
     - name: Salvar alterações no repositório
       run: |
